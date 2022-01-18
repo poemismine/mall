@@ -1,0 +1,187 @@
+buildscript {
+    ext {
+        springBootVersion = "2.6.2"
+    }
+
+    repositories {
+        maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
+        maven { url "https://plugins.gradle.org/m2/" }
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+allprojects {
+    group = "com.example.mall"
+    version = "0.0.1-SNAPSHOT"
+}
+
+subprojects {
+    apply plugin: "org.springframework.boot"
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: "java"
+
+    sourceCompatibility = 1.11
+    targetCompatibility = 1.11
+
+    [compileJava, compileTestJava, javadoc]*.options*.encoding = "UTF-8"
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+        //        移除spring boot 默认logger依赖
+        all*.exclude module: "spring-boot-starter-logging"
+    }
+
+    repositories {
+        mavenLocal()
+        maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url "https://repo1.maven.org/maven2" }
+        maven { url "https://jitpack.io" }
+        mavenCentral()
+    }
+
+    ext {
+        springBootVersion = "2.6.2"
+        junitVersion = "4.13.2"
+        lombokVersion = "1.18.22"
+        mybatisVersion = "2.2.0"
+        mybatisPlusVersion = "3.5.0"
+        mysqlConnectorJavaVersion = "8.0.28"
+        hutoolAllVersion = "5.7.18"
+        alibabaVersion = "2.2.7.RELEASE"
+        springCloudVersion = "3.1.0"
+        springCloudDependencieVersion = "2021.0.0"
+        httpcoreVersion = "4.4.15"
+        commonsLangVersion = "2.6"
+        reactorTestVersion = "3.3.22.RELEASE"
+        aliyunSdkOssVersion = "3.14.0"
+        springCloudStarterAlicloudOssVersion = "2.2.0.RELEASE"
+        aliyunJavaSdkCoreVersion = "4.6.0"
+    }
+
+    dependencies {
+        implementation("org.springframework.boot:spring-boot-starter:$springBootVersion") {
+            exclude module: "android-json"
+        }
+        implementation "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+        compileOnly "org.projectlombok:lombok:$lombokVersion"
+        developmentOnly "org.springframework.boot:spring-boot-devtools:$springBootVersion"
+        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion"
+        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+        implementation "org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion"
+        implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+        implementation "org.springframework.cloud:spring-cloud-starter-openfeign:$springCloudVersion"
+        implementation("com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery:$alibabaVersion") {
+            exclude module: "spring-cloud-starter-netflix-ribbon"
+        }
+        implementation "org.springframework.cloud:spring-cloud-starter-loadbalancer:$springCloudVersion"
+        implementation "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config:$alibabaVersion"
+        implementation "org.springframework.cloud:spring-cloud-starter-bootstrap:$springCloudVersion"
+        implementation "org.springframework.boot:spring-boot-starter-validation:$springBootVersion"
+
+
+        // 单元测试
+        testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion") {
+            exclude module: "android-json"
+        }
+        testImplementation "junit:junit:$junitVersion"
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudDependencieVersion"
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+project(":mall-common") {
+    dependencies {
+        implementation "org.apache.httpcomponents:httpcore:$httpcoreVersion"
+        implementation "commons-lang:commons-lang:$commonsLangVersion"
+        implementation "mysql:mysql-connector-java:$mysqlConnectorJavaVersion"
+        implementation "com.baomidou:mybatis-plus-boot-starter:$mybatisPlusVersion"
+        implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:$mybatisVersion"
+    }
+}
+
+project(":mall-third-party") {
+    dependencies {
+        implementation project(":mall-common")
+        implementation "com.alibaba.cloud:spring-cloud-starter-alicloud-oss:$springCloudStarterAlicloudOssVersion"
+
+    }
+}
+
+project(":mall-product") {
+    dependencies {
+        implementation project(":mall-common")
+        implementation "mysql:mysql-connector-java:$mysqlConnectorJavaVersion"
+        implementation "com.baomidou:mybatis-plus-boot-starter:$mybatisPlusVersion"
+        implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:$mybatisVersion"
+//        implementation "com.aliyun.oss:aliyun-sdk-oss:$aliyunSdkOssVersion"
+//        implementation "com.alibaba.cloud:spring-cloud-starter-alicloud-oss:$springCloudStarterAlicloudOssVersion"
+//        implementation "com.aliyun:aliyun-java-sdk-core:$aliyunJavaSdkCoreVersion"
+
+
+    }
+}
+
+project(":mall-member") {
+    dependencies {
+        implementation project(":mall-common")
+        implementation "mysql:mysql-connector-java:$mysqlConnectorJavaVersion"
+        implementation "com.baomidou:mybatis-plus-boot-starter:$mybatisPlusVersion"
+        implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:$mybatisVersion"
+    }
+}
+
+project(":mall-order") {
+    dependencies {
+        implementation project(":mall-common")
+        implementation "mysql:mysql-connector-java:$mysqlConnectorJavaVersion"
+        implementation "com.baomidou:mybatis-plus-boot-starter:$mybatisPlusVersion"
+        implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:$mybatisVersion"
+    }
+}
+
+
+project(":mall-ware") {
+    dependencies {
+        implementation project(":mall-common")
+        implementation "mysql:mysql-connector-java:$mysqlConnectorJavaVersion"
+        implementation "com.baomidou:mybatis-plus-boot-starter:$mybatisPlusVersion"
+        implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:$mybatisVersion"
+    }
+}
+
+
+project(":mall-coupon") {
+    dependencies {
+        implementation project(":mall-common")
+        implementation "mysql:mysql-connector-java:$mysqlConnectorJavaVersion"
+        implementation "com.baomidou:mybatis-plus-boot-starter:$mybatisPlusVersion"
+        implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:$mybatisVersion"
+    }
+}
+
+project(":mall-gateway") {
+    dependencies {
+        implementation "org.springframework.cloud:spring-cloud-starter-gateway:$springCloudVersion"
+        implementation "org.springframework.boot:spring-boot-starter-webflux:$springBootVersion"
+        testImplementation "io.projectreactor:reactor-test:$reactorTestVersion"
+    }
+    configurations {
+        //        移除spring boot 默认logger依赖
+        all*.exclude module: "spring-boot-starter-web"
+    }
+}

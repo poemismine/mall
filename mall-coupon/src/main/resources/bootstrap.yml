@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: mall-coupon
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.155.47:8848
+        file-extension: yaml
+        namespace: 87f87360-dd2d-4a69-b4ca-d59bd4924420
+        group: prod
+        extension-configs:
+          - data-id: datasource.yaml
+            group: dev
+            refresh: true
+          - data-id: mybatis.yaml
+            group: dev1
+            refresh: true
+          - data-id: nacos.yaml
+            group: dev
+            refresh: true

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: mall-ware
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.155.47:8848
+        file-extension: yaml
+        namespace: b8890a58-05f7-4d18-bc33-10f18525bf8a
+        group: prod
+        extension-configs:
+          - data-id: datasource.yaml
+            group: dev
+            refresh: true
+          - data-id: mybatis.yaml
+            group: dev
+            refresh: true
+          - data-id: nacos.yaml
+            group: dev
+            refresh: true

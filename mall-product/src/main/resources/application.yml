@@ -1,0 +1,49 @@
+#server:
+#  port: 10000
+#
+#spring:
+#  datasource:
+#    username: root
+#    password: root
+#    url: jdbc:mysql://172.29.134.130:3306/mall_pms
+#    type: com.zaxxer.hikari.HikariDataSource
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#  application:
+#    name: mall-product
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 127.0.0.1:8848
+#  main:
+#    allow-circular-references: true
+#
+#mybatis-plus:
+#  mapper-locations: classpath:/mapper/**/*.xml
+#  global-config:
+#    db-config:
+#      id-type: auto
+#  configuration:
+#    map-underscore-to-camel-case: true
+#mybatis-plus:
+#  global-config:
+#    db-config:
+#      logic-delete-field: show_status
+#      logic-delete-value: 0
+#      logic-not-delete-value: 1
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+
+#logging:
+#  level:
+#    com.example.mall.product: DEBUG
+#spring:
+#  cloud:
+#    alibaba:
+#      access-key: LTAI5tLxpTDgE3Cd1qcjy5Yq
+#      secret-key: iivrbmwPyrfqp9vLxwnqJ4nbcQuGd7
+#      oss:
+#        endpoint: https://oss-cn-shanghai.aliyuncs.com
